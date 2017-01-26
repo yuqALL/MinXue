@@ -9,7 +9,6 @@ import java.util.Map;
 
 /**
  * SharedPreferences封装方法
- * Created by liyu on 2016/9/13.
  */
 public class SPUtil {
     /**

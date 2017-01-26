@@ -63,6 +63,8 @@
         <item>10</item>
         <item>30</item>
     </string-array>
+    <string name="explain">为保证『知天气』的简洁，未加入任何广告，你可以通过微信付款来支持开发者继续优化应用，
+        金额大小根据你的心情。\n\n可以用微信直接扫描二维码，也可以长按二维码分享给自己，然后识别二维码支付。\n\n感谢你的支持！</string>
     <string name="theme">主题</string>
     <string name="done">确定</string>
     <string name="cancel">取消</string>

@@ -1,7 +1,10 @@
 package com.njit.student.yuqzy.minxue;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -16,21 +19,32 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.afollestad.materialdialogs.color.ColorChooserDialog;
+import com.njit.student.yuqzy.minxue.event.ThemeChangedEvent;
 import com.njit.student.yuqzy.minxue.ui.info.DownloadFragment;
 import com.njit.student.yuqzy.minxue.ui.info.MinxueAboutActivity;
 import com.njit.student.yuqzy.minxue.ui.info.MinxueFavoriteFragment;
 import com.njit.student.yuqzy.minxue.ui.info.MinxueFragment;
 import com.njit.student.yuqzy.minxue.ui.info.MinxueSearchFragment;
 import com.njit.student.yuqzy.minxue.ui.info.MinxueSettingActivity;
+import com.njit.student.yuqzy.minxue.ui.info.SettingFragment;
 import com.njit.student.yuqzy.minxue.utils.DoubleClickExit;
+import com.njit.student.yuqzy.minxue.utils.SettingsUtil;
+import com.njit.student.yuqzy.minxue.utils.ThemeUtil;
+import com.njit.student.yuqzy.minxue.utils.UpdateUtil;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener ,ColorChooserDialog.ColorCallback{
 
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private FragmentManager fragmentManager;
     private String currentFragmentTag;
+    private Toolbar toolbar;
 
     //抽屉主菜单
     private static final String FRAGMENT_TAG_MAIN = "minxue main page";//主页
@@ -38,12 +52,19 @@ public class MainActivity extends AppCompatActivity
     private static final String FRAGMENT_TAG_STAR = "star source";//收藏
     private static final String FRAGMENT_TAG_DOWNLOAD = "download";//下载
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(AppGlobal.CURRENT_INDEX, currentFragmentTag);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initTheme();
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         fragmentManager = getSupportFragmentManager();
@@ -54,6 +75,8 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         initFragment(savedInstanceState);
+
+        UpdateUtil.check(MainActivity.this, true);
     }
 
     private void initFragment(Bundle savedInstanceState) {
@@ -141,9 +164,15 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_about) {
             startActivity(new Intent(MainActivity.this, MinxueAboutActivity.class));
         } else if (id == R.id.nav_theme) {
-
+            new ColorChooserDialog.Builder(this, R.string.theme)
+                    .customColors(R.array.colors, null)
+                    .doneButton(R.string.done)
+                    .cancelButton(R.string.cancel)
+                    .allowUserColorInput(false)
+                    .allowUserColorInputAlpha(false)
+                    .show();
         } else if (id == R.id.nav_donate) {
-
+            startActivity(new Intent(MainActivity.this, PayActivity.class));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -193,4 +222,98 @@ public class MainActivity extends AppCompatActivity
         currentFragmentTag = name;
         invalidateOptionsMenu();
     }
+
+    @Override
+    public void onColorSelection(@NonNull ColorChooserDialog dialog, @ColorInt int selectedColor) {
+        if (selectedColor == ThemeUtil.getThemeColor(this, R.attr.colorPrimary))
+            return;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setStatusBarColor(selectedColor);
+        }
+        if (selectedColor == getResources().getColor(R.color.lapis_blue)) {
+            setTheme(R.style.LapisBlueTheme);
+            SettingsUtil.setTheme(0);
+        } else if (selectedColor == getResources().getColor(R.color.pale_dogwood)) {
+            setTheme(R.style.PaleDogwoodTheme);
+            SettingsUtil.setTheme(1);
+        } else if (selectedColor == getResources().getColor(R.color.greenery)) {
+            setTheme(R.style.GreeneryTheme);
+            SettingsUtil.setTheme(2);
+        } else if (selectedColor == getResources().getColor(R.color.primrose_yellow)) {
+            setTheme(R.style.PrimroseYellowTheme);
+            SettingsUtil.setTheme(3);
+        } else if (selectedColor == getResources().getColor(R.color.flame)) {
+            setTheme(R.style.FlameTheme);
+            SettingsUtil.setTheme(4);
+        } else if (selectedColor == getResources().getColor(R.color.island_paradise)) {
+            setTheme(R.style.IslandParadiseTheme);
+            SettingsUtil.setTheme(5);
+        } else if (selectedColor == getResources().getColor(R.color.kale)) {
+            setTheme(R.style.KaleTheme);
+            SettingsUtil.setTheme(6);
+        } else if (selectedColor == getResources().getColor(R.color.pink_yarrow)) {
+            setTheme(R.style.PinkYarrowTheme);
+            SettingsUtil.setTheme(7);
+        } else if (selectedColor == getResources().getColor(R.color.niagara)) {
+            setTheme(R.style.NiagaraTheme);
+            SettingsUtil.setTheme(8);
+        }
+        EventBus.getDefault().post(new ThemeChangedEvent(selectedColor));
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onThemeChanged(ThemeChangedEvent event) {
+        this.recreate();
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().unregister(this);
+        super.onDestroy();
+    }
+
+
+    private void initTheme() {
+        int themeIndex = SettingsUtil.getTheme();
+        switch (themeIndex) {
+            case 0:
+                setTheme(R.style.LapisBlueTheme);
+                break;
+            case 1:
+                setTheme(R.style.PaleDogwoodTheme);
+                break;
+            case 2:
+                setTheme(R.style.GreeneryTheme);
+                break;
+            case 3:
+                setTheme(R.style.PrimroseYellowTheme);
+                break;
+            case 4:
+                setTheme(R.style.FlameTheme);
+                break;
+            case 5:
+                setTheme(R.style.IslandParadiseTheme);
+                break;
+            case 6:
+                setTheme(R.style.KaleTheme);
+                break;
+            case 7:
+                setTheme(R.style.PinkYarrowTheme);
+                break;
+            case 8:
+                setTheme(R.style.NiagaraTheme);
+                break;
+
+        }
+    }
+
+
 }

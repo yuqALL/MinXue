@@ -1,5 +1,6 @@
 package com.njit.student.yuqzy.minxue.ui.info;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +12,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import com.bumptech.glide.Glide;
@@ -33,18 +35,10 @@ import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 
-import static com.njit.student.yuqzy.minxue.utils.FileUtil.getFileDir;
-
 public class MinxueAboutActivity extends AppCompatActivity {
     protected Toolbar toolbar;
     private TextView tvVersion;
     private ImageSwitcher imageSwitcher;
-    private String[] imageUrls = {
-            "http://7xp1a1.com1.z0.glb.clouddn.com/liyu01.png",
-            "http://7xp1a1.com1.z0.glb.clouddn.com/liyu02.png",
-            "http://7xp1a1.com1.z0.glb.clouddn.com/liyu03.png",
-            "http://7xp1a1.com1.z0.glb.clouddn.com/liyu04.png",
-            "http://7xp1a1.com1.z0.glb.clouddn.com/liyu05.png"};
     private int[] imgs={
             R.drawable.about_1,R.drawable.about_2,R.drawable.about_3,R.drawable.about_4,R.drawable.about_5
     };
@@ -53,7 +47,7 @@ public class MinxueAboutActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        initTheme();
+        initTheme();
         setContentView(R.layout.activity_minxue_about);
         initToolBar();
         initViews();
@@ -162,7 +156,7 @@ public class MinxueAboutActivity extends AppCompatActivity {
                 ShareUtils.shareText(this, "https://github.com/li-yu/FakeWeather");
                 break;
             case R.id.btn_mark_app:
-
+                openAppMarket();
                 break;
         }
     }
@@ -189,5 +183,17 @@ public class MinxueAboutActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void openAppMarket() {
+        try {
+            Uri uri = Uri.parse("market://details?id=" + getPackageName());
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }catch (ActivityNotFoundException anf) {
+            Toast.makeText(this,"未找到相关应用",Toast.LENGTH_SHORT).show();
+        }
+
     }
 }

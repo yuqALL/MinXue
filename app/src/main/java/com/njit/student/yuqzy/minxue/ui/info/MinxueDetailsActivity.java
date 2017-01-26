@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,6 +26,7 @@ import com.njit.student.yuqzy.minxue.database.mx;
 import com.njit.student.yuqzy.minxue.model.MinxueDetail;
 import com.njit.student.yuqzy.minxue.model.MinxueItem;
 import com.njit.student.yuqzy.minxue.model.MinxueSearchItem;
+import com.njit.student.yuqzy.minxue.utils.SettingsUtil;
 import com.njit.student.yuqzy.minxue.utils.WebUtils;
 
 import org.jsoup.Jsoup;
@@ -53,6 +55,7 @@ import static com.njit.student.yuqzy.minxue.AppGlobal.PRIMARY_KEY;
 
 public class MinxueDetailsActivity extends AppCompatActivity implements View.OnClickListener {
     private Subscription subscription;
+    private Toolbar toolbar;
     private ImageView imgIcon;
     private TextView textDetail, textDownload;
     private Button btnDown, btnStar, btnOriginal;
@@ -68,7 +71,11 @@ public class MinxueDetailsActivity extends AppCompatActivity implements View.OnC
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initTheme();
         setContentView(R.layout.activity_minxue_details);
+        toolbar=(Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        setDisplayHomeAsUpEnabled(true);
         Intent intent = getIntent();
         String come = intent.getStringExtra("come");
         if (come.equals("search")) {
@@ -82,6 +89,7 @@ public class MinxueDetailsActivity extends AppCompatActivity implements View.OnC
             item_name = item.getName();
             item_updateTime = item.getUpdateTime();
         }
+
         imgIcon = (ImageView) findViewById(R.id.detail_image);
         textDetail = (TextView) findViewById(R.id.detail_text);
         textDownload = (TextView) findViewById(R.id.detail_download);
@@ -124,6 +132,11 @@ public class MinxueDetailsActivity extends AppCompatActivity implements View.OnC
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    protected void setDisplayHomeAsUpEnabled(boolean enable) {
+        if (getSupportActionBar() != null)
+            getSupportActionBar().setDisplayHomeAsUpEnabled(enable);
     }
 
     public void getDetailsPage(String item_url) {
@@ -330,5 +343,39 @@ public class MinxueDetailsActivity extends AppCompatActivity implements View.OnC
     @Override
     public void onStop() {
         super.onStop();
+    }
+
+    private void initTheme(){
+        int themeIndex = SettingsUtil.getTheme();
+        switch (themeIndex){
+            case 0:
+                setTheme(R.style.LapisBlueTheme);
+                break;
+            case 1:
+                setTheme(R.style.PaleDogwoodTheme);
+                break;
+            case 2:
+                setTheme(R.style.GreeneryTheme);
+                break;
+            case 3:
+                setTheme(R.style.PrimroseYellowTheme);
+                break;
+            case 4:
+                setTheme(R.style.FlameTheme);
+                break;
+            case 5:
+                setTheme(R.style.IslandParadiseTheme);
+                break;
+            case 6:
+                setTheme(R.style.KaleTheme);
+                break;
+            case 7:
+                setTheme(R.style.PinkYarrowTheme);
+                break;
+            case 8:
+                setTheme(R.style.NiagaraTheme);
+                break;
+
+        }
     }
 }

@@ -10,6 +10,7 @@ import android.view.MenuItem;
 
 import com.afollestad.materialdialogs.color.ColorChooserDialog;
 import com.njit.student.yuqzy.minxue.R;
+import com.njit.student.yuqzy.minxue.event.ThemeChangedEvent;
 import com.njit.student.yuqzy.minxue.utils.SettingsUtil;
 import com.njit.student.yuqzy.minxue.utils.ThemeUtil;
 import org.greenrobot.eventbus.EventBus;
@@ -19,7 +20,7 @@ public class MinxueSettingActivity extends AppCompatActivity implements ColorCho
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //initTheme();
+        initTheme();
         setContentView(R.layout.activity_minxue_setting);
 
         initToolBar();
@@ -121,7 +122,7 @@ public class MinxueSettingActivity extends AppCompatActivity implements ColorCho
             setTheme(R.style.NiagaraTheme);
             SettingsUtil.setTheme(8);
         }
-        //getFragmentManager().beginTransaction().replace(R.id.contentLayout, new SettingFragment()).commit();
-        //EventBus.getDefault().post(new ThemeChangedEvent(selectedColor));
+        getFragmentManager().beginTransaction().replace(R.id.contentLayout, new SettingFragment()).commit();
+        EventBus.getDefault().post(new ThemeChangedEvent(selectedColor));
     }
 }

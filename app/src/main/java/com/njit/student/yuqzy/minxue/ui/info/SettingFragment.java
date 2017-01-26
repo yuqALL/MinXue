@@ -23,8 +23,6 @@ import rx.schedulers.Schedulers;
 public class SettingFragment extends PreferenceFragment implements Preference.OnPreferenceClickListener,
         Preference.OnPreferenceChangeListener {
 
-    private ListPreference weatherShareType;
-    private ListPreference busRefreshFreq;
     private Preference cleanCache;
     private Preference theme;
 
@@ -33,55 +31,43 @@ public class SettingFragment extends PreferenceFragment implements Preference.On
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.setting);
 
-        weatherShareType = (ListPreference) findPreference(SettingsUtil.WEATHER_SHARE_TYPE);
-        busRefreshFreq = (ListPreference) findPreference(SettingsUtil.BUS_REFRESH_FREQ);
         cleanCache = findPreference(SettingsUtil.CLEAR_CACHE);
         theme = findPreference(SettingsUtil.THEME);
 
-        weatherShareType.setSummary(weatherShareType.getValue());
-        busRefreshFreq.setSummary(String.format("%s 秒，长按『刷新』按钮即可开启自动模式。", busRefreshFreq.getValue()));
         String[] colorNames = getActivity().getResources().getStringArray(R.array.color_name);
-//        int currentThemeIndex = SettingsUtil.getTheme();
-//        if (currentThemeIndex >= colorNames.length) {
-//            theme.setSummary("自定义色");
-//        } else {
-//            theme.setSummary(colorNames[currentThemeIndex]);
-//        }
+        int currentThemeIndex = SettingsUtil.getTheme();
+        if (currentThemeIndex >= colorNames.length) {
+            theme.setSummary("自定义色");
+        } else {
+            theme.setSummary(colorNames[currentThemeIndex]);
+        }
 
-        weatherShareType.setOnPreferenceChangeListener(this);
-        busRefreshFreq.setOnPreferenceChangeListener(this);
         cleanCache.setOnPreferenceClickListener(this);
         theme.setOnPreferenceClickListener(this);
 
-//        String[] cachePaths = new String[]{FileUtil.getInternalCacheDir(App.getContext()), FileUtil.getExternalCacheDir(App.getContext())};
- //       Observable
-  //              .just(cachePaths)
-//                .map(new Func1<String[], String>() {
-//                    @Override
-//                    public String call(String[] strings) {
-//                        return FileSizeUtil.getAutoFileOrFilesSize(strings);
-//                    }
-//                })
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new SimpleSubscriber<String>() {
-//                    @Override
-//                    public void onNext(String s) {
-//                        cleanCache.setSummary(s);
-//                    }
-//                });
+        String[] cachePaths = new String[]{FileUtil.getInternalCacheDir(App.getContext()), FileUtil.getExternalCacheDir(App.getContext())};
+        Observable
+                .just(cachePaths)
+                .map(new Func1<String[], String>() {
+                    @Override
+                    public String call(String[] strings) {
+                        return FileSizeUtil.getAutoFileOrFilesSize(strings);
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SimpleSubscriber<String>() {
+                    @Override
+                    public void onNext(String s) {
+                        cleanCache.setSummary(s);
+                    }
+                });
 
     }
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object o) {
-        if (preference == weatherShareType) {
-            weatherShareType.setSummary((String) o);
-            SettingsUtil.setWeatherShareType((String) o);
-        } else if (preference == busRefreshFreq) {
-            busRefreshFreq.setSummary(String.format("%s 秒，长按『刷新』按钮即可开启自动模式。", (String) o));
-            SettingsUtil.setBusRefreshFreq(Integer.parseInt((String) o));
-        }
+
         return true;
     }
 

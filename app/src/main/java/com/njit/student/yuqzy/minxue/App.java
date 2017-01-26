@@ -17,7 +17,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         mContext = getApplicationContext();
-        Realm.init(mContext);
+
         if (!BuildConfig.DEBUG) {
             AppExceptionHandler.getInstance().setCrashHanler(this);
         }
