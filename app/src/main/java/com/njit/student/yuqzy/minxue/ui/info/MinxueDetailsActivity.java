@@ -58,7 +58,7 @@ public class MinxueDetailsActivity extends AppCompatActivity implements View.OnC
     private Toolbar toolbar;
     private ImageView imgIcon;
     private TextView textDetail, textDownload;
-    private Button btnDown, btnStar, btnOriginal;
+    private Button btnDown, btnStar, btnOriginal,btnRefresh;
     private String item_url = "";
     private String item_name = "";
     private String item_updateTime = "";
@@ -90,13 +90,18 @@ public class MinxueDetailsActivity extends AppCompatActivity implements View.OnC
             item_updateTime = item.getUpdateTime();
         }
 
+        init();
+
+    }
+    private void init()
+    {
         imgIcon = (ImageView) findViewById(R.id.detail_image);
         textDetail = (TextView) findViewById(R.id.detail_text);
         textDownload = (TextView) findViewById(R.id.detail_download);
         btnDown = (Button) findViewById(R.id.btn_download);
         btnStar = (Button) findViewById(R.id.btn_star);
         btnOriginal = (Button) findViewById(R.id.btn_original);
-
+        btnRefresh=(Button)findViewById(R.id.btn_refresh);
         getDetailsPage(item_url);
 
         btnOriginal.setOnClickListener(this);
@@ -121,7 +126,6 @@ public class MinxueDetailsActivity extends AppCompatActivity implements View.OnC
                 .schemaVersion(1)
                 .build();
         realmDownload = Realm.getInstance(downloadFileConfig);
-
     }
 
     @Override
@@ -220,7 +224,7 @@ public class MinxueDetailsActivity extends AppCompatActivity implements View.OnC
             public void onNext(MinxueDetail detail) {
                 Log.e("detail", detail.toString());
                 if (detail.getIcon() != "") {
-                    Glide.with(getApplicationContext()).load(detail.getIcon()).skipMemoryCache(true).override(600, 600).fitCenter().into(imgIcon);
+                    Glide.with(getApplicationContext()).load(detail.getIcon()).skipMemoryCache(true).override(800,800).fitCenter().into(imgIcon);
                 }
                 textDetail.setText(detail.getText());
                 textDownload.setText(detail.getStringURL());
@@ -306,6 +310,9 @@ public class MinxueDetailsActivity extends AppCompatActivity implements View.OnC
                 break;
             case R.id.btn_original:
                 WebUtils.openInternal(this, item_name, item_url);
+                break;
+            case R.id.btn_refresh:
+                init();
                 break;
 
         }

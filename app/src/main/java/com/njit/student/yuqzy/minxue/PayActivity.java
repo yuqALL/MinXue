@@ -1,19 +1,32 @@
 package com.njit.student.yuqzy.minxue;
 
+import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import com.njit.student.yuqzy.minxue.ui.info.MinxueAboutActivity;
 import com.njit.student.yuqzy.minxue.utils.SPUtil;
 import com.njit.student.yuqzy.minxue.utils.SettingsUtil;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class PayActivity extends AppCompatActivity implements View.OnLongClickListener{
 
@@ -89,10 +102,57 @@ public class PayActivity extends AppCompatActivity implements View.OnLongClickLi
         switch (v.getId())
         {
             case R.id.wechat_pay_qrcode:
+                toWeChatScan();
                 break;
             case R.id.zhifubao_pay_qrcode:
+                toAliPayScan();
                 break;
         }
         return false;
+    }
+
+    private void toWeChatScan() {
+        saveImage(R.drawable.wechat,"wechatpay");
+        try {
+
+            startActivity(getPackageManager().getLaunchIntentForPackage("com.tencent.mm"));
+        } catch (Exception e) {
+            //若无法正常跳转，在此进行错误处理
+            Toast.makeText(this, "无法跳转到微信，请检查您是否安装了微信！", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void toAliPayScan() {
+        saveImage(R.drawable.alipay,"alipay");
+        try {
+            //利用Intent打开支付宝
+            //支付宝跳过开启动画打开扫码和付款码的url scheme分别是alipayqr://platformapi/startapp?saId=10000007和
+            //alipayqr://platformapi/startapp?saId=20000056
+            Uri uri = Uri.parse("alipayqr://platformapi/startapp?saId=10000007");
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(intent);
+        } catch (Exception e) {
+            //若无法正常跳转，在此进行错误处理
+            Toast.makeText(this, "无法跳转到支付宝，请检查您是否安装了支付宝！", Toast.LENGTH_SHORT).show();
+        }
+    }
+    public void saveImage(int id,String name) {
+        Bitmap bmp= BitmapFactory.decodeResource(App.getContext().getResources(),id);
+        File appDir = new File(Environment.getExternalStorageDirectory(), "minxue");
+        if (!appDir.exists()) {
+            appDir.mkdir();
+        }
+        String fileName = name + ".jpg";
+        File file = new File(appDir, fileName);
+        try {
+            FileOutputStream fos = new FileOutputStream(file);
+            bmp.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            fos.flush();
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

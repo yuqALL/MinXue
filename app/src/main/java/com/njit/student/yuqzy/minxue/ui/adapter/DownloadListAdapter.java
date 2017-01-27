@@ -20,9 +20,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.njit.student.yuqzy.minxue.R;
 import com.njit.student.yuqzy.minxue.database.URL;
 import com.njit.student.yuqzy.minxue.model.MinxueDetail;
+import com.orhanobut.dialogplus.DialogPlus;
+import com.orhanobut.dialogplus.GridHolder;
+import com.orhanobut.dialogplus.Holder;
+import com.orhanobut.dialogplus.OnClickListener;
+import com.orhanobut.dialogplus.OnItemClickListener;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -67,6 +73,7 @@ public class DownloadListAdapter extends ArrayAdapter<MinxueDetail> {
 
         // bind data from selected element to view through view holder
         Glide.with(context).load(item.getIcon()).skipMemoryCache(true).fitCenter().into(viewHolder.downHeadimg);
+        //Glide.with(context).load(item.getIcon()).diskCacheStrategy(DiskCacheStrategy.ALL).fitCenter().into(viewHolder.downHeadimg);
         viewHolder.tvDownTitle.setText(item.getTitle());
         urlListAdapter adapter = new urlListAdapter(context, item);
         viewHolder.lv_downurl_content.setAdapter(adapter);
@@ -158,7 +165,51 @@ class urlListAdapter extends BaseAdapter {
                 ClipData mClipData = ClipData.newPlainText(urlKey, detail.getUrl().get(urlKey));
                 // 将ClipData内容放到系统剪贴板里。
                 cm.setPrimaryClip(mClipData);
-                launchapp(context);
+                //launchapp(context);
+
+                DownApp downApp=new DownApp(context);
+                DialogPlus dialog = DialogPlus.newDialog(context)
+                        .setContentHolder(new GridHolder(3))
+                        .setHeader(R.layout.downapp_header)
+                        .setFooter(R.layout.downapp_footer)
+                        .setCancelable(true)
+                        .setAdapter(downApp)
+                        .setOnClickListener(new OnClickListener() {
+                            @Override
+                            public void onClick(DialogPlus dialog, View view) {
+                                switch (view.getId()) {
+                                    case R.id.footer_close_button:
+                                        dialog.dismiss();
+                                        break;
+                                    case R.id.footer_confirm_button:
+                                        break;
+                                }
+                            }
+                        })
+                        .setOnItemClickListener(new OnItemClickListener() {
+                            @Override
+                            public void onItemClick(DialogPlus dialog, Object item, View view, int position) {
+                                Log.e("DialogPlus", "onItemClick() called with: " + "item = [" +
+                                        item + "], position = [" + position + "]");
+                                switch (position)
+                                {
+                                    case 0:
+                                        launchapp(context,APP_PACKAGE_NAME1);
+                                        break;
+                                    case 1:
+                                        launchapp(context,APP_PACKAGE_NAME3);
+                                        break;
+                                    case 2:
+                                        launchapp(context,APP_PACKAGE_NAME2);
+                                        break;
+                                }
+                            }
+                        })
+                        .setContentHeight(ViewGroup.LayoutParams.WRAP_CONTENT)
+                        .setOverlayBackgroundResource(android.R.color.transparent)
+                        .setExpanded(false)  // This will enable the expand feature, (similar to android L share dialog)
+                        .create();
+                dialog.show();
 
 
             }
@@ -172,19 +223,21 @@ class urlListAdapter extends BaseAdapter {
         ImageView item_url_down;
     }
 
-    public static final String APP_PACKAGE_NAME = "com.xunlei.downloadprovider";//包名
+    public static final String APP_PACKAGE_NAME1 = "com.xunlei.downloadprovider";//包名
+    public static final String APP_PACKAGE_NAME2 = "com.baidu.netdisk";//包名
+    public static final String APP_PACKAGE_NAME3 = "com.xunlei.downloadprovider.pad";//包名
 
     /**
      * 启动App
      *
      * @param context
      */
-    public static void launchapp(Context context) {
+    public static void launchapp(Context context,String package_name) {
         // 判断是否安装过App，否则去市场下载
-        if (isAppInstalled(context, APP_PACKAGE_NAME)) {
-            context.startActivity(context.getPackageManager().getLaunchIntentForPackage(APP_PACKAGE_NAME));
+        if (isAppInstalled(context, package_name)) {
+            context.startActivity(context.getPackageManager().getLaunchIntentForPackage(package_name));
         } else {
-            goToMarket(context, APP_PACKAGE_NAME);
+            goToMarket(context, package_name);
         }
     }
 

@@ -19,6 +19,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.njit.student.yuqzy.minxue.App;
 import com.njit.student.yuqzy.minxue.BuildConfig;
 import com.njit.student.yuqzy.minxue.R;
 import com.njit.student.yuqzy.minxue.utils.FileUtil;
@@ -144,7 +145,7 @@ public class MinxueAboutActivity extends AppCompatActivity {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_web_home:
-                WebUtils.openInternal(this,"minxue","https://github.com/li-yu/FakeWeather");
+                WebUtils.openExternal(this,"https://github.com/yuqZY/MinXue");
                 break;
             case R.id.btn_feedback:
                 feedBack();
@@ -153,10 +154,13 @@ public class MinxueAboutActivity extends AppCompatActivity {
                 UpdateUtil.check(MinxueAboutActivity.this, false);
                 break;
             case R.id.btn_share_app:
-                ShareUtils.shareText(this, "https://github.com/li-yu/FakeWeather");
+                ShareUtils.shareText(this, "https://github.com/yuqZY/MinXue");
                 break;
             case R.id.btn_mark_app:
                 openAppMarket();
+                break;
+            case R.id.btn_help:
+                startActivity(new Intent(MinxueAboutActivity.this,HelpActivity.class));
                 break;
         }
     }

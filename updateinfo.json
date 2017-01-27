@@ -1,0 +1,13 @@
+{
+    "error": false,
+    "results":
+        {
+            "app": "敏学网",
+            "versionCode": 1,
+            "versionName": "1.1",
+	        "updateTime": "2017-01-27 22:04:00",
+            "information": "优化内存占用",
+            "foreUpdate": false,
+            "url":"https://github.com/yuqZY/MinXue/apk/minxue_v1.0_201701272210.apk"
+        }
+}

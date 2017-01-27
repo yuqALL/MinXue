@@ -14,7 +14,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!-- SD卡读取权限，用户写入离线定位数据 -->
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
 
     <application
         android:name=".App"
@@ -46,19 +46,22 @@
         <activity
             android:name=".ui.info.MinxueAboutActivity"
             android:label="关于"
-            android:screenOrientation="portrait"
-             />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.info.MinxueSettingActivity"
             android:label="设置"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".PayActivity"
             android:label="感谢支持"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ui.info.HelpActivity"
+            android:label="使用帮助"
             android:screenOrientation="portrait"
-            />
+            android:hardwareAccelerated="false"
+            android:largeHeap="true"
+            ></activity>
     </application>
 
 </manifest>

@@ -30,7 +30,7 @@ public class RetrofitManager {
 
     private RetrofitManager() {
         retrofit = new Retrofit.Builder()
-                .baseUrl("http://liyuyu.cn/")
+                .baseUrl("https://github.com/yuqZY/MinXue/")
                 .client(httpClient())
                 .addConverterFactory(GsonConverterFactory.create(gson()))
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
@@ -55,8 +55,8 @@ public class RetrofitManager {
     }
 
     private static OkHttpClient httpClient() {
-//        File cacheFile = new File(FileUtil.getAppCacheDir(App.getContext()), "/HttpCache");
- //       Cache cache = new Cache(cacheFile, 1024 * 1024 * 100);
+        File cacheFile = new File(FileUtil.getAppCacheDir(App.getContext()), "/HttpCache");
+        Cache cache = new Cache(cacheFile, 1024 * 1024 * 100);
         Interceptor cacheInterceptor = new Interceptor() {
             @Override
             public Response intercept(Chain chain) throws IOException {
@@ -86,7 +86,7 @@ public class RetrofitManager {
             }
         };
         return new OkHttpClient.Builder()
-      //          .cache(cache).addInterceptor(cacheInterceptor)
+                .cache(cache).addInterceptor(cacheInterceptor)
                 .connectTimeout(15, TimeUnit.SECONDS)
                 .readTimeout(20, TimeUnit.SECONDS)
                 .writeTimeout(20, TimeUnit.SECONDS)

@@ -7,12 +7,8 @@ import com.njit.student.yuqzy.minxue.model.UpdateInfo;
 import retrofit2.http.GET;
 import rx.Observable;
 
-/**
- * Created by liyu on 2016/12/1.
- */
-
 public interface AppController {
 
-    @GET("http://api.caoliyu.cn/appupdate.json")
+    @GET("https://github.com/yuqZY/MinXue/updateinfo.json")
     Observable<BaseAppResponse<UpdateInfo>> checkUpdate();
 }

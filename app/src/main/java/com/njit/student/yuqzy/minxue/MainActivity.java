@@ -21,13 +21,7 @@ import android.view.MenuItem;
 
 import com.afollestad.materialdialogs.color.ColorChooserDialog;
 import com.njit.student.yuqzy.minxue.event.ThemeChangedEvent;
-import com.njit.student.yuqzy.minxue.ui.info.DownloadFragment;
-import com.njit.student.yuqzy.minxue.ui.info.MinxueAboutActivity;
-import com.njit.student.yuqzy.minxue.ui.info.MinxueFavoriteFragment;
-import com.njit.student.yuqzy.minxue.ui.info.MinxueFragment;
-import com.njit.student.yuqzy.minxue.ui.info.MinxueSearchFragment;
-import com.njit.student.yuqzy.minxue.ui.info.MinxueSettingActivity;
-import com.njit.student.yuqzy.minxue.ui.info.SettingFragment;
+import com.njit.student.yuqzy.minxue.ui.info.*;
 import com.njit.student.yuqzy.minxue.utils.DoubleClickExit;
 import com.njit.student.yuqzy.minxue.utils.SettingsUtil;
 import com.njit.student.yuqzy.minxue.utils.ThemeUtil;

@@ -1,20 +1,20 @@
 package com.njit.student.yuqzy.minxue.model;
 
 /**
- * Created by liyu on 2016/12/1.
+ * Created by yuqzy
  */
 
 public class UpdateInfo {
 
 
     /**
-     * app : 就看苏州
-     * versionCode : 4
-     * versionName : 1.1
-     * updateTime : 2016-11-11 18:00:00
-     * information : 新增多语言设置
+     * app : 敏学网
+     * versionCode :
+     * versionName : 1.0
+     * updateTime :
+     * information :
      * foreUpdate : false
-     * url : http://7xp1a1.com1.z0.glb.clouddn.com/app-debug.apk
+     * url :
      */
 
     private String app;
