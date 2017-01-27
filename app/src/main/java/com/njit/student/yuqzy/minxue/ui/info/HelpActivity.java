@@ -4,13 +4,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 
 import com.njit.student.yuqzy.minxue.R;
+import com.njit.student.yuqzy.minxue.ui.adapter.HelpImageAdapter;
 import com.njit.student.yuqzy.minxue.utils.SettingsUtil;
 
 public class HelpActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
+    private ListView helpList;
+    private HelpImageAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,6 +26,10 @@ public class HelpActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setTitle("使用帮助");
         setDisplayHomeAsUpEnabled(true);
+
+        helpList=(ListView)findViewById(R.id.help_list);
+        adapter=new HelpImageAdapter(this);
+        helpList.setAdapter(adapter);
     }
 
     protected void setDisplayHomeAsUpEnabled(boolean enable) {

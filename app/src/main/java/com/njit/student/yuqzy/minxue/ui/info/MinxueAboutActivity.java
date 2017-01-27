@@ -41,7 +41,7 @@ public class MinxueAboutActivity extends AppCompatActivity {
     private TextView tvVersion;
     private ImageSwitcher imageSwitcher;
     private int[] imgs={
-            R.drawable.about_1,R.drawable.about_2,R.drawable.about_3,R.drawable.about_4,R.drawable.about_5
+            R.drawable.about_1,R.drawable.about_2,R.drawable.about_3,R.drawable.about_5
     };
 
     private Subscription subscription;
@@ -89,7 +89,7 @@ public class MinxueAboutActivity extends AppCompatActivity {
                 loadImage();
             }
         });
-        subscription = Observable.interval(5, TimeUnit.SECONDS)
+        subscription = Observable.interval(4, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SimpleSubscriber<Long>() {
                     @Override
@@ -100,7 +100,7 @@ public class MinxueAboutActivity extends AppCompatActivity {
     }
 
     private void loadImage() {
-        Glide.with(this).load(imgs[new Random().nextInt(5)]).into(new SimpleTarget<GlideDrawable>(imageSwitcher.getWidth(), imageSwitcher.getHeight()) {
+        Glide.with(this).load(imgs[new Random().nextInt(4)]).into(new SimpleTarget<GlideDrawable>(imageSwitcher.getWidth(), imageSwitcher.getHeight()) {
             @Override
             public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
                 imageSwitcher.setImageDrawable(resource);
@@ -161,6 +161,9 @@ public class MinxueAboutActivity extends AppCompatActivity {
                 break;
             case R.id.btn_help:
                 startActivity(new Intent(MinxueAboutActivity.this,HelpActivity.class));
+                break;
+            case R.id.btn_blog_home:
+                WebUtils.openExternal(this,"https://yuqzy.github.io/");
                 break;
         }
     }

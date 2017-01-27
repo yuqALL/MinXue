@@ -8,7 +8,7 @@ import retrofit2.http.GET;
 import rx.Observable;
 
 public interface AppController {
-
-    @GET("https://github.com/yuqZY/MinXue/updateinfo.json")
+        //https://github.com/yuqZY/MinXue/updateinfo.json
+    @GET("https://raw.githubusercontent.com/yuqZY/MinXue/master/updateinfo.json")
     Observable<BaseAppResponse<UpdateInfo>> checkUpdate();
 }

@@ -93,7 +93,22 @@
                 android:textSize="16sp"/>
 
             <Button
-                android:id="@+id/btn_web_home"
+            android:id="@+id/btn_web_home"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="16dp"
+            android:textSize="14sp"
+            android:textColor="@color/colorTextDark2nd"
+            android:drawableStart="@drawable/ic_website_dark"
+            android:drawableLeft="@drawable/ic_website_dark"
+            android:drawablePadding="16dp"
+            android:onClick="onClick"
+            android:text="项目主页"
+            />
+            <Button
+                android:id="@+id/btn_blog_home"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?attr/selectableItemBackground"
@@ -101,11 +116,11 @@
                 android:paddingLeft="16dp"
                 android:textSize="14sp"
                 android:textColor="@color/colorTextDark2nd"
-                android:drawableStart="@drawable/ic_website_dark"
-                android:drawableLeft="@drawable/ic_website_dark"
+                android:drawableStart="@drawable/ic_blog"
+                android:drawableLeft="@drawable/ic_blog"
                 android:drawablePadding="16dp"
                 android:onClick="onClick"
-                android:text="项目主页"
+                android:text="我的博客"
                 />
             <Button
                 android:id="@+id/btn_help"
