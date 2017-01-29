@@ -37,7 +37,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:background="@drawable/edit_bac"
-                android:paddingLeft="30dp"
+                android:drawableLeft="@drawable/ic_search"
+                android:paddingLeft="6dp"
                 android:hint="请输入关键字..."
                 android:imeOptions="actionSearch"
                 android:inputType="text"
@@ -47,13 +48,6 @@
                 android:textColor="@color/black"
                 android:textColorHint="#c2c2c2"
                 android:textSize="16sp" />
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left|center_vertical"
-                android:layout_marginLeft="15dp"
-                android:src="@drawable/ic_search_gray_24dp"
-                android:visibility="visible"/>
             <ImageView
                 android:id="@+id/search_iv_delete"
                 android:layout_width="wrap_content"

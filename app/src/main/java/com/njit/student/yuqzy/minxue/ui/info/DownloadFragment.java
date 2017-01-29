@@ -4,12 +4,13 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
+
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Toast;
+
 
 import com.andexert.expandablelayout.library.ExpandableLayoutListView;
 import com.njit.student.yuqzy.minxue.MainActivity;
@@ -17,7 +18,7 @@ import com.njit.student.yuqzy.minxue.R;
 import com.njit.student.yuqzy.minxue.database.URL;
 import com.njit.student.yuqzy.minxue.database.mx;
 import com.njit.student.yuqzy.minxue.model.MinxueDetail;
-import com.njit.student.yuqzy.minxue.model.MinxueItem;
+
 import com.njit.student.yuqzy.minxue.ui.adapter.DownloadListAdapter;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnClickListener;
@@ -37,6 +38,7 @@ public class DownloadFragment extends Fragment {
     private Realm realmDownload;
     private RealmConfiguration downloadFileConfig;
     private RealmResults<mx> results;
+    private ExpandableLayoutListView expandableLayoutListView;
 
     public DownloadFragment() {
         // Required empty public constructor
@@ -46,6 +48,7 @@ public class DownloadFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         Realm.init(getContext());
         downloadFileConfig = new RealmConfiguration.Builder()
                 .name("download_file_list")
@@ -57,11 +60,18 @@ public class DownloadFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.fragment_download, container, false);
         mToolbar = (Toolbar) view.findViewById(R.id.toolbar);
         mToolbar.setTitle("资源下载");
         ((MainActivity) getActivity()).initDrawer(mToolbar);
-        ExpandableLayoutListView expandableLayoutListView = (ExpandableLayoutListView) view.findViewById(R.id.lv_download);
+        expandableLayoutListView = (ExpandableLayoutListView) view.findViewById(R.id.lv_download);
+        loadData();
+        return view;
+    }
+
+    public void loadData() {
+
         final ArrayList<MinxueDetail> items = new ArrayList<>();
         results = realmDownload.where(mx.class).findAll();
         for (int i = 0; i < results.size(); i++) {
@@ -73,9 +83,7 @@ public class DownloadFragment extends Fragment {
             Map<String, String> url = new HashMap<>();
             for (int j = 0; j < m.getArticle_download_urls().size(); j++) {
                 URL item_url = m.getArticle_download_urls().get(j);
-                if (item_url.getFileURL() != "http://www.minxue.net/channel-name-help.html") {
-                    url.put(item_url.getFileName(), item_url.getFileURL());
-                }
+                url.put(item_url.getFileName(), item_url.getFileURL());
 
             }
 
@@ -96,23 +104,22 @@ public class DownloadFragment extends Fragment {
                         .setOnClickListener(new OnClickListener() {
                             @Override
                             public void onClick(DialogPlus dialog, View view) {
-                                    switch (view.getId())
-                                    {
-                                        case R.id.footer_close_button:
-                                            dialog.dismiss();
-                                            break;
-                                        case R.id.footer_confirm_button:
-                                            realmDownload.executeTransaction(new Realm.Transaction() {
-                                                @Override
-                                                public void execute(Realm realm) {
+                                switch (view.getId()) {
+                                    case R.id.footer_close_button:
+                                        dialog.dismiss();
+                                        break;
+                                    case R.id.footer_confirm_button:
+                                        realmDownload.executeTransaction(new Realm.Transaction() {
+                                            @Override
+                                            public void execute(Realm realm) {
 
-                                                    results.deleteFromRealm(position);
-                                                    adapter.remove(d);
-                                                }
-                                            });
-                                            dialog.dismiss();
-                                            break;
-                                    }
+                                                results.deleteFromRealm(position);
+                                                adapter.remove(d);
+                                            }
+                                        });
+                                        dialog.dismiss();
+                                        break;
+                                }
                             }
                         })
                         .setExpanded(false)
@@ -123,7 +130,6 @@ public class DownloadFragment extends Fragment {
                 return true;
             }
         });
-        return view;
     }
 
 
@@ -140,6 +146,7 @@ public class DownloadFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+
     }
 
 }

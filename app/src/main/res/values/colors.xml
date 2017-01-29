@@ -13,7 +13,10 @@
     <color name="colorTextDark">#424242</color>
     <color name="colorTextDark2nd">#757575</color>
     <color name="actionColor">#8AD9E0</color>
-
+    <color name="fab">#88f9e4e7</color>
+    <color name="fab_pressed">#88fcf3f4</color>
+    <color name="half_black">#88808080</color>
+    <color name="black_semi_transparent">#B2000000</color>
     <color name="lapis_blue">#014284</color>
     <color name="pale_dogwood">#ECCAC0</color>
     <color name="greenery">#7DA743</color>

@@ -18,18 +18,34 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageSwitcher;
+import android.widget.ImageView;
+import android.widget.ViewSwitcher;
 
 import com.afollestad.materialdialogs.color.ColorChooserDialog;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.njit.student.yuqzy.minxue.event.ThemeChangedEvent;
 import com.njit.student.yuqzy.minxue.ui.info.*;
 import com.njit.student.yuqzy.minxue.utils.DoubleClickExit;
 import com.njit.student.yuqzy.minxue.utils.SettingsUtil;
+import com.njit.student.yuqzy.minxue.utils.SimpleSubscriber;
 import com.njit.student.yuqzy.minxue.utils.ThemeUtil;
 import com.njit.student.yuqzy.minxue.utils.UpdateUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
+
+import rx.Observable;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener ,ColorChooserDialog.ColorCallback{
@@ -39,6 +55,16 @@ public class MainActivity extends AppCompatActivity
     private FragmentManager fragmentManager;
     private String currentFragmentTag;
     private Toolbar toolbar;
+    private ImageSwitcher nav_img_switcher;
+    private Subscription subscription;
+    private int[] imgs={
+            R.drawable.nav_bac_1,R.drawable.nav_bac_2,R.drawable.nav_bac_3,
+            R.drawable.nav_bac_5,R.drawable.nav_bac_7,R.drawable.nav_bac_8,
+            R.drawable.nav_bac_9,R.drawable.nav_bac_11,R.drawable.nav_bac_12,
+            R.drawable.nav_bac_13,R.drawable.nav_bac_14,R.drawable.nav_bac_15,R.drawable.nav_bac_16,
+            R.drawable.nav_bac_17,R.drawable.nav_bac_18,R.drawable.nav_bac_19,R.drawable.nav_bac_20,
+            R.drawable.nav_bac_21,R.drawable.nav_bac_22
+    };
 
     //抽屉主菜单
     private static final String FRAGMENT_TAG_MAIN = "minxue main page";//主页
@@ -67,9 +93,25 @@ public class MainActivity extends AppCompatActivity
                 this, mDrawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+
+        nav_img_switcher=(ImageSwitcher) navigationView.inflateHeaderView(R.layout.nav_header_main).findViewById(R.id.nav_header_imageSwitcher);
+        //nav_img.setBackgroundResource(R.drawable.nav_bac_3);
+        nav_img_switcher.setFactory(new ViewSwitcher.ViewFactory() {
+            @Override
+            public View makeView() {
+                ImageView imageView = new ImageView(nav_img_switcher.getContext());
+                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                return imageView;
+            }
+        });
+        nav_img_switcher.setInAnimation(AnimationUtils.loadAnimation(this,
+                R.anim.zoom_in));
+        nav_img_switcher.setOutAnimation(AnimationUtils.loadAnimation(this,
+                R.anim.zoom_out));
         navigationView.setNavigationItemSelectedListener(this);
         initFragment(savedInstanceState);
 
+        loadData();
         UpdateUtil.check(MainActivity.this, true);
     }
 
@@ -80,6 +122,32 @@ public class MainActivity extends AppCompatActivity
             currentFragmentTag = savedInstanceState.getString(AppGlobal.CURRENT_INDEX);
             switchContent(currentFragmentTag);
         }
+    }
+
+    protected void loadData() {
+        nav_img_switcher.post(new Runnable() {
+            @Override
+            public void run() {
+                loadImage();
+            }
+        });
+        subscription = Observable.interval(5, TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SimpleSubscriber<Long>() {
+                    @Override
+                    public void onNext(Long aLong) {
+                        loadImage();
+                    }
+                });
+    }
+
+    private void loadImage() {
+        Glide.with(this).load(imgs[new Random().nextInt(19)]).into(new SimpleTarget<GlideDrawable>(nav_img_switcher.getWidth(), nav_img_switcher.getHeight()) {
+            @Override
+            public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
+                nav_img_switcher.setImageDrawable(resource);
+            }
+        });
     }
 
     public void initDrawer(Toolbar toolbar) {
@@ -208,7 +276,14 @@ public class MainActivity extends AppCompatActivity
         if (foundFragment == null) {
 
         } else if (foundFragment.isAdded()) {
-            ft.show(foundFragment);
+
+            if(name!=FRAGMENT_TAG_DOWNLOAD) {
+                ft.show(foundFragment);
+            }else {
+                ft.remove(foundFragment);
+                foundFragment = new DownloadFragment();
+                ft.add(R.id.content_main, foundFragment, name);
+            }
         } else {
             ft.add(R.id.content_main, foundFragment, name);
         }
@@ -271,6 +346,8 @@ public class MainActivity extends AppCompatActivity
     protected void onDestroy() {
         if (EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().unregister(this);
+        if (!subscription.isUnsubscribed())
+            subscription.unsubscribe();
         super.onDestroy();
     }
 
@@ -308,6 +385,5 @@ public class MainActivity extends AppCompatActivity
 
         }
     }
-
 
 }

@@ -26,7 +26,7 @@
         <item>尼亚加拉</item>
     </string-array>
 
-    <string name="open_source">• 感谢敏学网提供的数据：www.minxue.net\n• 感谢“假装看天气”：https://github.com/li-yu/FakeWeather\n• Realm：https://realm.io/\n• Glide: github.com/bumptech/glide\n• RxJava: github.com/ReactiveX/RxJava\n• Retrofit: github.com/square/retrofit\n• EventBus: github.com/greenrobot/EventBus\n• dialogplus: github.com/orhanobut/dialogplus\n• RxAndroid: github.com/ReactiveX/RxAndroid\n• SeeWeather: github.com/xcc3641/SeeWeather\n• RxBinding: github.com/JakeWharton/RxBinding\n• RxPermissions: github.com/tbruyelle/RxPermissions\n• material-dialogs: github.com/afollestad/material-dialogs\n• BaseRecyclerViewAdapterHelper: github.com/CymChad/BaseRecyclerViewAdapterHelper
+    <string name="open_source">• 感谢敏学网提供的数据：www.minxue.net\n• 感谢“假装看天气”：https://github.com/li-yu/FakeWeather\n• Realm：https://realm.io/\n• Glide: github.com/bumptech/glide\n• RxJava: github.com/ReactiveX/RxJava\n• Retrofit: github.com/square/retrofit\n• EventBus: github.com/greenrobot/EventBus\n• ButtonMenu: github.com/tuenti/ButtonMenu\n• dialogplus: github.com/orhanobut/dialogplus\n• RxAndroid: github.com/ReactiveX/RxAndroid\n• SeeWeather: github.com/xcc3641/SeeWeather\n• RxBinding: github.com/JakeWharton/RxBinding\n• RxPermissions: github.com/tbruyelle/RxPermissions\n• material-dialogs: github.com/afollestad/material-dialogs\n• BaseRecyclerViewAdapterHelper: github.com/CymChad/BaseRecyclerViewAdapterHelper
     </string>
     <string name="my_word">本软件所提供的数据均来自于敏学网（www.minxue.net），文件所有权均属于该网站，软件仅限于学习和研究目的。\n若本App触犯了贵公司的权益，请联系我们，我们会尽快处理！\n
     我的联系方式：\n QQ:1329060146\n 邮箱:yuq329@outlook.com\n\n</string>
@@ -38,7 +38,4 @@
     <string name="done">确定</string>
     <string name="cancel">取消</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_minxue_search">MinxueSearchActivity</string>
 </resources>

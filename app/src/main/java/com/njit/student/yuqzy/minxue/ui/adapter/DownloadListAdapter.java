@@ -286,7 +286,7 @@ class GETHeight {
             totalHeight += listItem.getMeasuredHeight();
         }
         ViewGroup.LayoutParams params = listview.getLayoutParams();
-        params.height = totalHeight + (listview.getDividerHeight() * (listAdapter.getCount() - 1)) + 100;
+        params.height = totalHeight + (listview.getDividerHeight() * (listAdapter.getCount() - 1)) + 20;
         listview.setLayoutParams(params);
     }
 }

@@ -12,7 +12,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:textSize="15sp"
-        android:layout_weight="9" />
+        android:layout_weight="9"
+        android:maxLines="1"
+        android:ellipsize="middle"/>
 
     <ImageView
         android:id="@+id/item_url_down"

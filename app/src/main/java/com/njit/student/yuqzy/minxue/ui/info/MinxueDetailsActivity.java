@@ -1,12 +1,7 @@
 package com.njit.student.yuqzy.minxue.ui.info;
 
-import android.content.ActivityNotFoundException;
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
+
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,13 +15,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.njit.student.yuqzy.minxue.R;
 import com.njit.student.yuqzy.minxue.database.URL;
 import com.njit.student.yuqzy.minxue.database.mx;
 import com.njit.student.yuqzy.minxue.model.MinxueDetail;
 import com.njit.student.yuqzy.minxue.model.MinxueItem;
 import com.njit.student.yuqzy.minxue.model.MinxueSearchItem;
+
 import com.njit.student.yuqzy.minxue.utils.SettingsUtil;
+
 import com.njit.student.yuqzy.minxue.utils.WebUtils;
 
 import org.jsoup.Jsoup;
@@ -51,14 +49,12 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
-import static com.njit.student.yuqzy.minxue.AppGlobal.PRIMARY_KEY;
 
 public class MinxueDetailsActivity extends AppCompatActivity implements View.OnClickListener {
     private Subscription subscription;
     private Toolbar toolbar;
     private ImageView imgIcon;
     private TextView textDetail, textDownload;
-    private Button btnDown, btnStar, btnOriginal,btnRefresh;
     private String item_url = "";
     private String item_name = "";
     private String item_updateTime = "";
@@ -67,6 +63,7 @@ public class MinxueDetailsActivity extends AppCompatActivity implements View.OnC
     private RealmConfiguration downloadFileConfig;
     private RealmQuery<mx> query;
     private RealmResults<mx> results;
+    private FloatingActionButton fab_star;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,15 +95,9 @@ public class MinxueDetailsActivity extends AppCompatActivity implements View.OnC
         imgIcon = (ImageView) findViewById(R.id.detail_image);
         textDetail = (TextView) findViewById(R.id.detail_text);
         textDownload = (TextView) findViewById(R.id.detail_download);
-        btnDown = (Button) findViewById(R.id.btn_download);
-        btnStar = (Button) findViewById(R.id.btn_star);
-        btnOriginal = (Button) findViewById(R.id.btn_original);
-        btnRefresh=(Button)findViewById(R.id.btn_refresh);
+        fab_star=(FloatingActionButton)findViewById(R.id.fab_star);
         getDetailsPage(item_url);
 
-        btnOriginal.setOnClickListener(this);
-        btnDown.setOnClickListener(this);
-        btnStar.setOnClickListener(this);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setTitle(item_name);
@@ -118,7 +109,8 @@ public class MinxueDetailsActivity extends AppCompatActivity implements View.OnC
         query = realm.where(mx.class);
         results = query.equalTo("article_url", item_url).findAll();
         if (results.size() > 0) {
-            btnStar.setText("取消收藏");
+
+            fab_star.setTitle("取消收藏");
         }
 
         downloadFileConfig = new RealmConfiguration.Builder()
@@ -253,7 +245,8 @@ public class MinxueDetailsActivity extends AppCompatActivity implements View.OnC
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_download:
+
+            case R.id.fab_download:
                 RealmResults<mx> down = realmDownload.where(mx.class).equalTo("article_url", item_url).findAll();
                 if (down.size() > 0) {
                     Toast.makeText(this, "链接已载入下载页面！请前往下载页面下载！", Toast.LENGTH_SHORT).show();
@@ -275,9 +268,8 @@ public class MinxueDetailsActivity extends AppCompatActivity implements View.OnC
                         Toast.makeText(getApplicationContext(), "获取链接出错！", Toast.LENGTH_SHORT).show();
                     }
                 });
-
                 break;
-            case R.id.btn_star:
+            case R.id.fab_star:
                 if (results.size() <= 0) {
 
                     realm.executeTransactionAsync(new Realm.Transaction() {
@@ -289,7 +281,7 @@ public class MinxueDetailsActivity extends AppCompatActivity implements View.OnC
                         @Override
                         public void onSuccess() {
                             Log.e("Star!", "Realm.Transaction.OnSuccess");
-                            btnStar.setText("取消收藏");
+                            fab_star.setTitle("取消收藏");
                         }
                     }, new Realm.Transaction.OnError() {
                         @Override
@@ -303,17 +295,18 @@ public class MinxueDetailsActivity extends AppCompatActivity implements View.OnC
                         @Override
                         public void execute(Realm realm) {
                             results.deleteAllFromRealm();
-                            btnStar.setText("收藏");
+                            fab_star.setTitle("收藏");
                         }
                     });
                 }
                 break;
-            case R.id.btn_original:
+            case R.id.fab_original:
                 WebUtils.openInternal(this, item_name, item_url);
                 break;
-            case R.id.btn_refresh:
+            case R.id.fab_refresh:
                 init();
                 break;
+
 
         }
     }

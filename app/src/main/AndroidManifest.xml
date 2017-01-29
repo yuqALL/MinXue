@@ -29,11 +29,7 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name="com.thefinestartist.finestwebview.FinestWebViewActivity"
@@ -56,12 +52,21 @@
             android:name=".PayActivity"
             android:label="感谢支持"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.info.HelpActivity"
-            android:label="使用帮助"
-            android:screenOrientation="portrait"
+        <activity
+            android:name=".ui.info.HelpActivity"
             android:hardwareAccelerated="false"
+            android:label="使用帮助"
             android:largeHeap="true"
-            ></activity>
+            android:screenOrientation="portrait" />
+        <activity android:name=".WelcomActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/FullTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

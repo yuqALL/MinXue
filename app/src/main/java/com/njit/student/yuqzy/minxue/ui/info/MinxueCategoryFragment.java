@@ -6,7 +6,6 @@ import android.util.Log;
 
 
 import com.njit.student.yuqzy.minxue.R;
-import com.njit.student.yuqzy.minxue.model.MinxueDetail;
 import com.njit.student.yuqzy.minxue.model.MinxueItem;
 import com.njit.student.yuqzy.minxue.ui.adapter.MinxueAdapter;
 import com.njit.student.yuqzy.minxue.ui.base.BaseContentFragment;
@@ -123,16 +122,6 @@ public class MinxueCategoryFragment extends BaseContentFragment {
                     if(url.equals("http://www.minxue.net/")) {
                         Element total = doc.select("div#hot_news").first();
                         items = total.select("div.hot_news_list");
-                    }else if(url.equals("http://www.minxue.net/index.php?action-channel-name-help"))
-                    {
-                        items=null;
-//                        MinxueItem item = new MinxueItem();
-//                        item.setName("迅雷下载及使用帮助");
-//                        item.setUrl("http://dl.xunlei.com/index.htm");
-//                        minxueItems.add(item);
-//                        item.setName("eMule 软件下载地址及eMule使用帮助.");
-//                        item.setUrl("http://www.emule-project.net/home/perl/general.cgi?l=16&rm=download");
-//                        minxueItems.add(item);
                     }else
                     {
                         Element total=doc.select("ul.global_tx_list4").first();

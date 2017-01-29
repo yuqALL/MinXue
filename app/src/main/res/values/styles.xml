@@ -1,6 +1,24 @@
 <resources>
 
-    <style name="BaseTheme" parent="Theme.AppCompat.Light.NoActionBar"></style>
+    <style name="FullTheme" parent="Theme.AppCompat">
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowBackground">@drawable/main_info</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <style name="button_menu_element">
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:background">@color/transparent</item>
+    </style>
+
+
+    <style name="BaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    </style>
     <!-- Base application theme. -->
     <style name="AppTheme" parent="BaseTheme">
         <!-- Customize your theme here. -->
@@ -26,7 +44,10 @@
         <item name="colorPrimaryDark">@color/greenery</item>
         <item name="colorAccent">@color/greenery</item>
     </style>
-
+    <style name="menu_labels_style">
+        <item name="android:background">@drawable/fab_label_background</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
     <style name="PrimroseYellowTheme" parent="BaseTheme">
         <item name="colorPrimary">@color/primrose_yellow</item>
         <item name="colorPrimaryDark">@color/primrose_yellow</item>

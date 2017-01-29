@@ -9,7 +9,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.ImageView;
 
 import com.njit.student.yuqzy.minxue.MainActivity;
 import com.njit.student.yuqzy.minxue.R;
@@ -40,6 +39,7 @@ public class MinxueFragment extends BaseFragment {
     private Toolbar mToolbar;
     private ACache mCache;
 
+
     private Subscription subscription;
     public MinxueFragment() {
         // Required empty public constructor
@@ -59,6 +59,7 @@ public class MinxueFragment extends BaseFragment {
         mToolbar = findView(R.id.toolbar);
         mToolbar.setTitle("敏学网");
         ((MainActivity) getActivity()).initDrawer(mToolbar);
+
     }
 
     @Override
@@ -79,9 +80,11 @@ public class MinxueFragment extends BaseFragment {
                     Elements links = cate.select("a[href]");
                     for (Element element : links) {
                         MinxueCategory minxue = new MinxueCategory();
-                        minxue.setName(element.text());
-                        minxue.setUrl(element.attr("abs:href"));
-                        list.add(minxue);
+                        if(element.text().indexOf("帮助")<0) {
+                            minxue.setName(element.text());
+                            minxue.setUrl(element.attr("abs:href"));
+                            list.add(minxue);
+                        }
                     }
                 } catch (IOException e) {
                     Snackbar.make(getView(), "获取分类失败!", Snackbar.LENGTH_INDEFINITE).setAction("重试", new View.OnClickListener() {
