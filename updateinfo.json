@@ -5,9 +5,9 @@
             "app": "敏学网",
             "versionCode": 4,
             "versionName": "1.4",
-	        "updateTime": "2017-01-29 22:14:00",
-            "information": "第一个功能齐全的稳定版本",
+	        "updateTime": "2017-03-03 22:14:00",
+            "information": "第一个功能齐全的稳定版本，更改应用图标",
             "foreUpdate": false,
-            "url":"https://raw.githubusercontent.com/yuqZY/MinXue/apk/minxue_v1.4_201701292214.apk"
+            "url":"https://raw.githubusercontent.com/yuqZY/MinXue/apk/minxue_v1.4_20170303.apk"
         }
 }

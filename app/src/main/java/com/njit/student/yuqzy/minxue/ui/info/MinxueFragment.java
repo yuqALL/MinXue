@@ -69,6 +69,8 @@ public class MinxueFragment extends BaseFragment {
             initTabLayout(minxueCategories);
             return;
         }
+        //lm_list.jsp?urltype=tree.TreeTempUrl&amp;wbtreeid=1035
+        //http://jwc.njit.edu.cn/lm_list.jsp?urltype=tree.TreeTempUrl&wbtreeid=1052
         String host = "http://www.minxue.net/";
         subscription = Observable.just(host).subscribeOn(Schedulers.io()).map(new Func1<String, List<MinxueCategory>>() {
             @Override

@@ -93,18 +93,18 @@ public class MinxueSearchFragment extends BaseFragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() > 0) {
-                    ivDelete.setVisibility(View.VISIBLE);
-                } else {
-                    ivDelete.setVisibility(GONE);
-                }
+            ivDelete.setVisibility(View.VISIBLE);
+        } else {
+            ivDelete.setVisibility(GONE);
+        }
 
-            }
+    }
 
-            @Override
-            public void afterTextChanged(Editable s) {
+    @Override
+    public void afterTextChanged(Editable s) {
 
-            }
-        });
+    }
+});
         searchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
